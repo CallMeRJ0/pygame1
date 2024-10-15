@@ -1,10 +1,15 @@
 import pygame
 import time
 
-screen = pygame.display.set_mode((1000,720))
-game_icon = pygame.image.load('placeholder.png')
+ICON_PNG = "placeholder.png"
+WINDOW_CAPTION = "Snake Game"
+WINDOW_X = 1000
+WINDOW_Y = 720
+
+screen = pygame.display.set_mode((WINDOW_X,WINDOW_Y))
+game_icon = pygame.image.load(ICON_PNG)
 pygame.display.set_icon(game_icon)
-pygame.display.set_caption("Snake Game")
+pygame.display.set_caption(WINDOW_CAPTION)
 clock = pygame.time.Clock()
 
 red = (235, 52, 52)
@@ -22,18 +27,22 @@ while not quit_game:
         if event.type == pygame.QUIT:
             quit_game = True
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
+            if event.key == pygame.K_LEFT or event.key == pygame.K_A:
                 snake_x_change = -20
                 snake_y_change = 0
-            if event.key == pygame.K_RIGHT:
+            if event.key == pygame.K_RIGHT or event.key == pygame.K_D:
                 snake_x_change = 20
                 snake_y_change = 0
-            if event.key == pygame.K_UP:
+            if event.key == pygame.K_UP or event.key == pygame.K_W:
                 snake_y_change = -20
                 snake_x_change = 0
-            if event.key == pygame.K_DOWN:
+            if event.key == pygame.K_DOWN or event.key == pygame.K_S:
                 snake_y_change = 20
                 snake_x_change = 0
+
+if snake_x >= WINDOW_X or snake_x < 0 or snake_y >= WINDOW_Y or snake_y < 0:
+    quit_game = Trhe
+
 
 snake_x += snake_x_change
 snake_y += snake_y_change
