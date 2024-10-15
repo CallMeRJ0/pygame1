@@ -5,7 +5,7 @@ ICON = "snake.jpg"
 APPLE = "apple.png"
 WINDOW_CAPTION = "Snake Game"
 screen_x = 1000
-screen_y = 720
+screen_y = 800
 snake_speed = 10
 
 pygame.init()
@@ -18,7 +18,6 @@ clock = pygame.time.Clock()
 
 red = (235, 52, 52)
 green = (188, 227, 199)
-blue = (65, 105, 225)
 black = (0, 0, 0)
 white = (245, 249, 255)
 head_color = (255, 215, 0)
@@ -36,7 +35,6 @@ score = 0
 
 food_x = 0
 food_y = 0
-food = pygame.Rect(0, 0, 20, 20)
 
 font = pygame.font.Font("ariblk.ttf", 30)
 
@@ -49,6 +47,8 @@ def load_high_score():
         with open("HI_score.txt", "w") as hi_score_file:
             hi_score_file.write("0")
         return 0
+    except Exception as e:
+        print(f"Error: {e}")
 
 def save_high_score(high_score):
     global score
@@ -56,15 +56,15 @@ def save_high_score(high_score):
         with open("HI_score.txt", "w") as hi_score_file:
             hi_score_file.write(str(score))
 
+def HighscoreCounter(high_score, text_colour, bkgd_colour, x, y):
+    txt = font.render(str(high_score) + " high score", True, text_colour, bkgd_colour)
+    text_box = txt.get_rect(center=(x, y))
+    screen.blit(txt, text_box)
+
 def scoreCounter(snake_list, text_colour, bkgd_colour, x, y):
     global score
     score = int(len(snake_list) - 1)
     txt = font.render(str(score) + " score", True, text_colour, bkgd_colour)
-    text_box = txt.get_rect(center=(x, y))
-    screen.blit(txt, text_box)
-
-def HighscoreCounter(high_score, text_colour, bkgd_colour, x, y):
-    txt = font.render(str(high_score) + " high score", True, text_colour, bkgd_colour)
     text_box = txt.get_rect(center=(x, y))
     screen.blit(txt, text_box)
 
@@ -82,7 +82,7 @@ def message(msg, text_colour, bkgd_colour, x, y):
 def spawnFood():
     global food_x, food_y
     food_x = round(random.randrange(20, screen_x - 20) / 20) * 20
-    food_y = round(random.randrange(20, screen_y - 20) / 20) * 20
+    food_y = round(random.randrange(60, screen_y - 20) / 20) * 20
 
 def reset_game():
     global snake_x, snake_y, snake_x_change, snake_y_change, quit_game, snake_list, snake_length, score
@@ -131,6 +131,8 @@ while True:
            (food_x <= snake_x + 20 < food_x + 20) and (food_y <= snake_y + 20 < food_y + 20):
             spawnFood()
             snake_length += 1
+
+        snake_speed = (len(snake_list) * 2 + 6) if len(snake_list) > 1 else 10
 
         snake_head = [snake_x, snake_y]
         snake_list.append(snake_head)
