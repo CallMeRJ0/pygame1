@@ -7,6 +7,8 @@ WINDOW_X = 1000
 WINDOW_Y = 720
 snake_speed = 10
 
+pygame.init()
+
 screen = pygame.display.set_mode((WINDOW_X,WINDOW_Y))
 game_icon = pygame.image.load(ICON_PNG)
 pygame.display.set_icon(game_icon)
@@ -42,13 +44,11 @@ while not quit_game:
                 snake_y_change = 20
                 snake_x_change = 0
 
-if snake_x >= WINDOW_X or snake_x < 0 or snake_y >= WINDOW_Y or snake_y < 0:
-    quit_game = True
-
-
 snake_x += snake_x_change
 snake_y += snake_y_change
 
+if snake_x >= WINDOW_X or snake_x < 0 or snake_y >= WINDOW_Y or snake_y < 0:
+    quit_game = True
 
 screen.fill(green)
 
@@ -56,3 +56,5 @@ pygame.draw.rect(screen, red, [snake_x, snake_y, 20, 20])
 pygame.display.update()
 
 clock.tick(snake_speed)
+
+pygame.quit()
