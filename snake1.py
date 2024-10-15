@@ -44,17 +44,29 @@ while not quit_game:
                 snake_y_change = 20
                 snake_x_change = 0
 
-snake_x += snake_x_change
-snake_y += snake_y_change
+    snake_x += snake_x_change
+    snake_y += snake_y_change
 
-if snake_x >= WINDOW_X or snake_x < 0 or snake_y >= WINDOW_Y or snake_y < 0:
-    quit_game = True
+    if snake_x >= WINDOW_X or snake_x < 0 or snake_y >= WINDOW_Y or snake_y < 0:
+        quit_game = True
 
-screen.fill(green)
+    screen.fill(green)
 
-pygame.draw.rect(screen, red, [snake_x, snake_y, 20, 20])
-pygame.display.update()
+    pygame.draw.rect(screen, red, [snake_x, snake_y, 20, 20])
+    pygame.display.update()
 
-clock.tick(snake_speed)
+    clock.tick(snake_speed)
+
+    font = pygame.font.Font("ARIALBD.TTF", 50)
+    
+    def message(msg, text_colour, bkgd_colour):
+        txt = font.render(msg, True, text_colour, bkgd_colour)
+        text_box = txt.get_rect(center = (500, 360))
+        screen.blit(txt, text_box)
+
+    message("You died!", black, white)
+    pygame.display.update()
+    time.sleep(3)
 
 pygame.quit()
+quit()
