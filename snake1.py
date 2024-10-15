@@ -15,6 +15,7 @@ clock = pygame.time.Clock()
 
 red = (235, 52, 52)
 blue = (52, 122, 235)
+green = (188, 227, 199)
 black = (0, 0, 0)
 white = (245, 249, 255)
 snake_x = 490
@@ -42,7 +43,7 @@ while not quit_game:
                 snake_x_change = 0
 
 if snake_x >= WINDOW_X or snake_x < 0 or snake_y >= WINDOW_Y or snake_y < 0:
-    quit_game = Trhe
+    quit_game = True
 
 
 snake_x += snake_x_change
