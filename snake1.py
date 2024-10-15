@@ -5,6 +5,7 @@ ICON_PNG = "placeholder.png"
 WINDOW_CAPTION = "Snake Game"
 WINDOW_X = 1000
 WINDOW_Y = 720
+snake_speed = 10
 
 screen = pygame.display.set_mode((WINDOW_X,WINDOW_Y))
 game_icon = pygame.image.load(ICON_PNG)
@@ -53,4 +54,4 @@ screen.fill(green)
 pygame.draw.rect(screen, red, [snake_x, snake_y, 20, 20])
 pygame.display.update()
 
-clock.tick(10)
+clock.tick(snake_speed)
