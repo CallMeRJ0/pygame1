@@ -1,5 +1,6 @@
 import pygame
 import time
+import random
 
 ICON_PNG = "snake.jpg"
 WINDOW_CAPTION = "Snake Game"
@@ -24,9 +25,10 @@ snake_x = 490
 snake_y = 350
 snake_x_change = 0
 snake_y_change = 0
+food_x = round(random.randrange(20, 1000 - 20)/ 20) * 20
+food_y = round(random.randrange(20, 600 - 20)/ 20) * 20
 
-font = pygame.font.Font("ariblk.ttf", 50)  # Ensure this file is in your project folder
-
+font = pygame.font.Font("ariblk.ttf", 50) 
 def message(msg, text_colour, bkgd_colour):
     txt = font.render(msg, True, text_colour, bkgd_colour)
     text_box = txt.get_rect(center=(500, 360))
@@ -57,9 +59,16 @@ while not quit_game:
     if snake_x >= WINDOW_X or snake_x < 0 or snake_y >= WINDOW_Y or snake_y < 0:
         quit_game = True
 
+
+    if snake_x == food_x and snake_y == food_y:
+        print("DETECTION")
+        food_x = round(random.randrange(20, WINDOW_X - 20) / 20) * 20
+        food_y = round(random.randrange(20, WINDOW_Y - 20) / 20) * 20
+
     screen.fill(green)
 
     pygame.draw.rect(screen, red, [snake_x, snake_y, 20, 20])
+    pygame.draw.circle(screen, blue, [food_x, food_x], 10)
     pygame.display.update()
 
     clock.tick(snake_speed)
