@@ -1,7 +1,8 @@
 import pygame
 import random
 
-ICON_PNG = "snake.jpg"
+ICON = "snake.jpg"
+APPLE = "apple.png"
 WINDOW_CAPTION = "Snake Game"
 screen_x = 1000
 screen_y = 720
@@ -10,7 +11,7 @@ snake_speed = 10
 pygame.init()
 
 screen = pygame.display.set_mode((screen_x, screen_y))
-game_icon = pygame.image.load(ICON_PNG)
+game_icon = pygame.image.load(ICON)
 pygame.display.set_icon(game_icon)
 pygame.display.set_caption(WINDOW_CAPTION)
 clock = pygame.time.Clock()
@@ -20,7 +21,11 @@ green = (188, 227, 199)
 blue = (65, 105, 225)
 black = (0, 0, 0)
 white = (245, 249, 255)
-head_color = (255, 215, 0)  
+head_color = (255, 215, 0)
+
+# Load and scale the food image (snake.jpg)
+food_image = pygame.image.load(APPLE).convert_alpha()  # Load image
+food_image = pygame.transform.scale(food_image, (20, 20))  # Scale image to 20x20
 
 snake_x = 490
 snake_y = 350
@@ -28,11 +33,20 @@ snake_x_change = 0
 snake_y_change = 0
 snake_list = []
 snake_length = 1
+score = 0
 
 food_x = 0
 food_y = 0
+food = pygame.Rect(0, 0, 20, 20)
 
-font = pygame.font.Font("ariblk.ttf", 50)
+font = pygame.font.Font("ariblk.ttf", 30)
+
+def scoreCounter(snake_list, text_colour, bkgd_colour, x, y):
+    global score
+    score = int(len(snake_list) - 1)
+    txt = font.render(str(score), True, text_colour, bkgd_colour)
+    text_box = txt.get_rect(center=(x, y))
+    screen.blit(txt, text_box)
 
 def draw_snake(snake_list):
     if snake_list:
@@ -105,12 +119,18 @@ while True:
 
         screen.fill(green)
         draw_snake(snake_list)
-        pygame.draw.circle(screen, blue, [food_x, food_y], 10)
+        
+        # Draw the score
+        scoreCounter(snake_list, black, white, screen_x - 50, 30)  # Update score position as needed
+        
+        # Blit the food image at the food's position
+        screen.blit(food_image, (food_x, food_y))  # Use the image as the food
+        
         pygame.display.update()
         clock.tick(snake_speed)
 
     screen.fill(green)
-    message("Click r to retry and q to quit.", black, white, 500, 400)
+    message("Press R to restart and press Q to quit program.", black, white, screen_x/2, (screen_y/2) - screen_y / 30)
     pygame.display.update()
 
     while True:
