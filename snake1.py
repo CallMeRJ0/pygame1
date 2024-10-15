@@ -23,9 +23,8 @@ black = (0, 0, 0)
 white = (245, 249, 255)
 head_color = (255, 215, 0)
 
-# Load and scale the food image (snake.jpg)
-food_image = pygame.image.load(APPLE).convert_alpha()  # Load image
-food_image = pygame.transform.scale(food_image, (20, 20))  # Scale image to 20x20
+food_image = pygame.image.load(APPLE).convert_alpha()
+food_image = pygame.transform.scale(food_image, (20, 20))
 
 snake_x = 490
 snake_y = 350
@@ -41,18 +40,39 @@ food = pygame.Rect(0, 0, 20, 20)
 
 font = pygame.font.Font("ariblk.ttf", 30)
 
+def load_high_score():
+    try:
+        with open("HI_score.txt", "r") as hi_score_file:
+            value = hi_score_file.read().strip()
+            return int(value) if value else 0
+    except FileNotFoundError:
+        with open("HI_score.txt", "w") as hi_score_file:
+            hi_score_file.write("0")
+        return 0
+
+def save_high_score(high_score):
+    global score
+    if score > high_score:
+        with open("HI_score.txt", "w") as hi_score_file:
+            hi_score_file.write(str(score))
+
 def scoreCounter(snake_list, text_colour, bkgd_colour, x, y):
     global score
     score = int(len(snake_list) - 1)
-    txt = font.render(str(score), True, text_colour, bkgd_colour)
+    txt = font.render(str(score) + " score", True, text_colour, bkgd_colour)
+    text_box = txt.get_rect(center=(x, y))
+    screen.blit(txt, text_box)
+
+def HighscoreCounter(high_score, text_colour, bkgd_colour, x, y):
+    txt = font.render(str(high_score) + " high score", True, text_colour, bkgd_colour)
     text_box = txt.get_rect(center=(x, y))
     screen.blit(txt, text_box)
 
 def draw_snake(snake_list):
     if snake_list:
-        pygame.draw.rect(screen, head_color, [snake_list[-1][0], snake_list[-1][1], 20, 20])  
+        pygame.draw.rect(screen, head_color, [snake_list[-1][0], snake_list[-1][1], 20, 20])
     for segment in snake_list[:-1]:
-        pygame.draw.rect(screen, red, [segment[0], segment[1], 20, 20]) 
+        pygame.draw.rect(screen, red, [segment[0], segment[1], 20, 20])
 
 def message(msg, text_colour, bkgd_colour, x, y):
     txt = font.render(msg, True, text_colour, bkgd_colour)
@@ -65,16 +85,18 @@ def spawnFood():
     food_y = round(random.randrange(20, screen_y - 20) / 20) * 20
 
 def reset_game():
-    global snake_x, snake_y, snake_x_change, snake_y_change, quit_game, snake_list, snake_length
+    global snake_x, snake_y, snake_x_change, snake_y_change, quit_game, snake_list, snake_length, score
     snake_x = 490
     snake_y = 350
     snake_x_change = 0
     snake_y_change = 0
     snake_list = []
     snake_length = 1
+    score = 0
     spawnFood()
     quit_game = False
 
+high_score = load_high_score()
 spawnFood()
 quit_game = False
 
@@ -83,6 +105,7 @@ while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
+                save_high_score(high_score)
                 quit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_a:
@@ -119,28 +142,27 @@ while True:
 
         screen.fill(green)
         draw_snake(snake_list)
-        
-        # Draw the score
-        scoreCounter(snake_list, black, white, screen_x - 50, 30)  # Update score position as needed
-        
-        # Blit the food image at the food's position
-        screen.blit(food_image, (food_x, food_y))  # Use the image as the food
+        scoreCounter(snake_list, black, white, screen_x - 80, 30)
+        HighscoreCounter(high_score, black, white, 110, 30)
+        screen.blit(food_image, (food_x, food_y))
         
         pygame.display.update()
         clock.tick(snake_speed)
 
     screen.fill(green)
-    message("Press R to restart and press Q to quit program.", black, white, screen_x/2, (screen_y/2) - screen_y / 30)
+    message("Press R to restart and press Q to quit program.", black, white, screen_x / 2, (screen_y / 2) - screen_y / 30)
     pygame.display.update()
 
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
+                save_high_score(high_score)
                 quit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q:
                     pygame.quit()
+                    save_high_score(high_score)
                     quit()
                 elif event.key == pygame.K_r:
                     reset_game()
