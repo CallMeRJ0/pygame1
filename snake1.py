@@ -9,7 +9,7 @@ snake_speed = 10
 
 pygame.init()
 
-screen = pygame.display.set_mode((WINDOW_X,WINDOW_Y))
+screen = pygame.display.set_mode((WINDOW_X, WINDOW_Y))
 game_icon = pygame.image.load(ICON_PNG)
 pygame.display.set_icon(game_icon)
 pygame.display.set_caption(WINDOW_CAPTION)
@@ -25,22 +25,29 @@ snake_y = 350
 snake_x_change = 0
 snake_y_change = 0
 
+font = pygame.font.Font("ariblk.ttf", 50)  # Ensure this file is in your project folder
+
+def message(msg, text_colour, bkgd_colour):
+    txt = font.render(msg, True, text_colour, bkgd_colour)
+    text_box = txt.get_rect(center=(500, 360))
+    screen.blit(txt, text_box)
+
 quit_game = False
 while not quit_game:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             quit_game = True
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT or event.key == pygame.K_A:
+            if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                 snake_x_change = -20
                 snake_y_change = 0
-            if event.key == pygame.K_RIGHT or event.key == pygame.K_D:
+            if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                 snake_x_change = 20
                 snake_y_change = 0
-            if event.key == pygame.K_UP or event.key == pygame.K_W:
+            if event.key == pygame.K_UP or event.key == pygame.K_w:
                 snake_y_change = -20
                 snake_x_change = 0
-            if event.key == pygame.K_DOWN or event.key == pygame.K_S:
+            if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                 snake_y_change = 20
                 snake_x_change = 0
 
@@ -57,16 +64,10 @@ while not quit_game:
 
     clock.tick(snake_speed)
 
-    font = pygame.font.Font("ARIALBD.TTF", 50)
-    
-    def message(msg, text_colour, bkgd_colour):
-        txt = font.render(msg, True, text_colour, bkgd_colour)
-        text_box = txt.get_rect(center = (500, 360))
-        screen.blit(txt, text_box)
-
-    message("You died!", black, white)
-    pygame.display.update()
-    time.sleep(3)
+screen.fill(green)
+message("You died!", black, white)
+pygame.display.update()
+time.sleep(3)
 
 pygame.quit()
 quit()
