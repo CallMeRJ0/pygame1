@@ -12,5 +12,10 @@ while not quit_game:
         if event.type == pygame.QUIT:
             quit_game = True
 
+red = (235, 52, 52)
+blue = (52, 122, 235)
+black = (0, 0, 0)
+white = (245, 249, 255)
 
-quit()
+snake_x = 490
+snake_y = 350
