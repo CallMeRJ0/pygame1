@@ -1,7 +1,7 @@
 import pygame
 import time
 
-ICON_PNG = "placeholder.png"
+ICON_PNG = "snake.jpg"
 WINDOW_CAPTION = "Snake Game"
 WINDOW_X = 1000
 WINDOW_Y = 720
